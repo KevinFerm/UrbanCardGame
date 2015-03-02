@@ -11,7 +11,13 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
   end
-
+  def admin
+    if current_user.admin?
+      @user = User.find(current_user.id)
+    else
+      redirect_to root_path
+    end
+  end
   # GET /users/new
   def new
     @user = User.new

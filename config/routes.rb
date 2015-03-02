@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :cards
 
   get 'battlefield' => 'matches#battlefield'
+  get 'admin' => 'users#admin'
   root 'home#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
