@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title><%= content_for?(:title) ? yield(:title) : "foundation-rails" %></title>
+
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "vendor/modernizr" %>
+    <%= javascript_include_tag "application", 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+
+  <body>
+  <% if current_user %>
+      <nav data-topbar role="navigation" class="top-bar">
+        <section class="top-bar-section">
+          <ul class="title-area">
+            <li class="active"><a href="/">Home</a></li>
+            <li class="has-dropdown not-click"><a href="#">Game</a>
+              <ul class="dropdown">
+                <li><a href="/battlefield">Match Making</a></li>
+                <li><a href="#">Selective Match</a></li>
+              </ul>
+            </li>
+            <li class="has-dropdown not-click"><a href="#">Deck</a>
+              <ul class="dropdown">
+                <li><a href="/decks">Decks</a></li>
+                <li><a href="#">Build Deck</a></li>
+              </ul>
+            </li>
+            <li class="has-dropdown not-click"><a href="#">Guide</a>
+              <ul class="dropdown">
+                <li><a href="#">Singleplayer</a></li>
+                <li><a href="#">Multiplayer</a></li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+        <section class="top-bar-section">
+          <ul class="right">
+            <li class="active"><a href="#"><%= current_user.email %></a></li>
+            <li class="active"><a href="/logout">Logout</a></li>
+            <% if current_user.admin? %>
+                <li class="active"><a href="/admin">Admin</a></li>
+            <% end %>
+          </ul>
+        </section>
+      </nav>
+  <% end %>
+    <%= yield %>
+
+  </body>
+</html>

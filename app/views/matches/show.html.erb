@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @match.title %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @match.active %>
+</p>
+
+<p>
+  <strong>Players:</strong>
+  <%= @match.players %>
+</p>
+
+<p>
+  <strong>Max players:</strong>
+  <%= @match.max_players %>
+</p>
+
+<p>
+  <strong>Turn:</strong>
+  <%= @match.turn %>
+</p>
+
+<p>
+  <strong>Phase:</strong>
+  <%= @match.phase %>
+</p>
+
+<p>
+  <strong>Decks:</strong>
+  <%= @match.decks %>
+</p>
+
+<p>
+  <strong>Stats:</strong>
+  <%= @match.stats %>
+</p>
+
+<p>
+  <strong>Battlefield:</strong>
+  <%= @match.battlefield %>
+</p>
+
+<p>
+  <strong>Triggers:</strong>
+  <%= @match.triggers %>
+</p>
+
+<%= link_to 'Edit', edit_match_path(@match) %> |
+<%= link_to 'Back', matches_path %>

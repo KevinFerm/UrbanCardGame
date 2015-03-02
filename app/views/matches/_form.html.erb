@@ -1,0 +1,57 @@
+<%= form_for(@match) do |f| %>
+  <% if @match.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@match.errors.count, "error") %> prohibited this match from being saved:</h2>
+
+      <ul>
+      <% @match.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :active %><br>
+    <%= f.check_box :active %>
+  </div>
+  <div class="field">
+    <%= f.label :players %><br>
+    <%= f.text_field :players %>
+  </div>
+  <div class="field">
+    <%= f.label :max_players %><br>
+    <%= f.number_field :max_players %>
+  </div>
+  <div class="field">
+    <%= f.label :turn %><br>
+    <%= f.number_field :turn %>
+  </div>
+  <div class="field">
+    <%= f.label :phase %><br>
+    <%= f.number_field :phase %>
+  </div>
+  <div class="field">
+    <%= f.label :decks %><br>
+    <%= f.text_field :decks %>
+  </div>
+  <div class="field">
+    <%= f.label :stats %><br>
+    <%= f.text_field :stats %>
+  </div>
+  <div class="field">
+    <%= f.label :battlefield %><br>
+    <%= f.text_field :battlefield %>
+  </div>
+  <div class="field">
+    <%= f.label :triggers %><br>
+    <%= f.text_field :triggers %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

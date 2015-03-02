@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Admin:</strong>
+  <%= @user.admin %>
+</p>
+
+<p>
+  <strong>Wins:</strong>
+  <%= @user.wins %>
+</p>
+
+<p>
+  <strong>Losses:</strong>
+  <%= @user.losses %>
+</p>
+
+<p>
+  <strong>Decks:</strong>
+  <%= @user.decks %>
+</p>
+
+<p>
+  <strong>Coins:</strong>
+  <%= @user.coins %>
+</p>
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>

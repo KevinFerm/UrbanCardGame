@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  active: false
+  players: MyString
+  max_players: 1
+  turn: 1
+  phase: 1
+  decks: MyString
+  stats: MyString
+  battlefield: MyString
+  triggers: MyString
+
+two:
+  title: MyString
+  active: false
+  players: MyString
+  max_players: 1
+  turn: 1
+  phase: 1
+  decks: MyString
+  stats: MyString
+  battlefield: MyString
+  triggers: MyString
