@@ -11,5 +11,5 @@
   "dependencies": {
   "socket.io": "^1.2.1",
   "sqlite3": "^3.0.4"
-}
+  }
 }
