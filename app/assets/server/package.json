@@ -1,0 +1,15 @@
+{
+  "name": "combat",
+  "version": "1.0.0",
+  "description": "battle system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jag",
+  "license": "ISC",
+  "dependencies": {
+  "socket.io": "^1.2.1",
+  "sqlite3": "^3.0.4"
+}
+}
