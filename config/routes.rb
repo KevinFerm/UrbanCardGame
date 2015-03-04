@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'battlefield' => 'matches#battlefield'
   get 'admin' => 'users#admin'
   root 'home#index'
+  get '/decks' => 'home#decks'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
