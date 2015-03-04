@@ -3,3 +3,27 @@
 
 
 <h1>New Deck</h1>
+
+<div id="cardcount">
+
+</div>
+<h1>Cards in deck:</h1>
+<div id="deck">
+
+</div>
+<h1>Left:</h1>
+<div id="count">
+
+</div>
+
+<h2>Cardlist:</h2>
+<% @cards.each do |x,y| %>
+<div id="addCardToDeck" class="card_<%= x.title %>">
+  <%= x.title %>
+</div>
+<% end  %>
+<hr>
+<br>
+<b>Deck Title:</b>
+<%= text_field_tag 'deckTitle' %>
+<button id="submitDeck" class="button">Visa mer</button>
