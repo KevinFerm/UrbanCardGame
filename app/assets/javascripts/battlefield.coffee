@@ -18,13 +18,19 @@ drop = (ev) ->
 
 $ ->
   if gameReady
+    socket.on "draw", (data) ->
+      console.log(data)
+      for card in data.cards
+          console.log(card.name)
+          $('#hand').append '<img id="Card_' + card.name + '" src="http://placehold.it/200x270/aaaaaa&amp;text=[Card_' + card.name + ']" style="opacity: 0.9" draggable="true" ondragstart="drag(event)">'
+
     $('#draw-deck').click ->
       #socket.emit 'drawCard', 1
-  socket.emit('create', { # Create set the game up for this player
-    room: 'Denatons Battle',
-    id: 1, #id of the battle
-    playerid: 0 #id of the this player
-  })
+    socket.emit('create', { # Create set the game up for this player
+      room: 'Denatons Battle',
+      id: 1, #id of the battle
+      playerid: 0 #id of the this player
+    })
 
 #socket.on 'readyGame', ->
 #  gameReady = true

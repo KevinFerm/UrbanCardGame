@@ -5,10 +5,6 @@ var io = require('socket.io')(1337);
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database("../../../db/development.sqlite3");
 
-db.get("SELECT * FROM users", function(err, user) {
-    console.log(user.id);
-});
-
 /*
 * Alla Emit som man tar emot ska ha id av vilken match det är som den sickas ifrån.
 * Data variablen är information ifrån Client
@@ -58,13 +54,17 @@ function Play(data){
                     // Play card effect if its is an event card, or if its a person we should check target building
                     switch(card.type){
                         case 'Event':
+                            eval(GetFCardEffect(card));
+                            battlefield[data.playerid].discard.push(card);
                             break;
                         case 'Person':
+                            battlefield[data.playerid].battlefield[data.targetid].worker.push(card);
+                            break;
+                        case 'Building':
+                            // Add card to the battlefield on your side
+                            battlefield[data.playerid].battlefield.push(card);
                             break;
                     }
-
-                    // Add card to the battlefield on your side
-                    battlefield[data.playerid].battlefield.push(card);
 
                     // Remove the card in your hand
                     players[data.playerid]['hand'].splice(i, 1);
@@ -92,17 +92,20 @@ function Draw(data,x){
     db.get("SELECT * FROM matches WHERE id='"+data.id+"'", function(err, match) {
         var deck = JSON.parse(match.decks);
         var players = JSON.parse(match.players); // To add cards onto tire hands
-
+        var cards = [];
         for(var i = 0; i < x; i++){
             // draw card and add it to the hand
             players[data.playerid]['hand'].push(deck[data.playerid][0]);
-
+            cards.push(deck[data.playerid][0]);
             // Remove the drawn card from the deck
             deck[data.playerid].shift();
         }
 
         // Update Hand with new cards
-        io.to(match).emit('hand', cards);
+        io.to(data.room).emit('draw', {
+            'cards': cards,
+            'msg': "Drew " + x + " cards."
+        });
 
         // Update Deck in DB
         db.run("UPDATE matches SET decks = '"+JSON.stringify(deck)+"', players = '"+JSON.stringify(players)+"' WHERE id = '"+data.id+"'");
@@ -140,6 +143,27 @@ function Shuffle(data){
         db.run("UPDATE matches SET decks = '"+JSON.stringify(deck)+"' WHERE id = '"+data.id+"'");
         console.log("Updated Deck with Shuffles");
     });
+}
+
+function GetFCardEffect(card){
+    // Str is the eval we are running based on card arguments and effect;
+    var str = '';
+    // For each effect on the card
+    for(effect in card.effect) {
+        // Add function start
+        str += effect + '(';
+        // For each argument on effect
+        for(var l = 0; l < effect.length; l++){
+            if(effect.last != effect[i]){
+                // Add the arguments in the card to the function
+                str += effect[i] + ',';
+            }
+            else{
+                // If itsd is the last argument add the end of the function
+                str += effect[i] + ');/n';;
+            }
+        }
+    }
 }
 
 function GainPoints(){
