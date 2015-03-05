@@ -25,30 +25,6 @@
   <%= @card.type %>
 </p>
 
-<p>
-  <strong>Start:</strong>
-  <%= @card.start %>
-</p>
-
-<p>
-  <strong>Upkeep:</strong>
-  <%= @card.upkeep %>
-</p>
-
-<p>
-  <strong>Downkeep:</strong>
-  <%= @card.downkeep %>
-</p>
-
-<p>
-  <strong>Main:</strong>
-  <%= @card.main %>
-</p>
-
-<p>
-  <strong>End:</strong>
-  <%= @card.end %>
-</p>
-
+<%= @cardjson %>
 <%= link_to 'Edit', edit_card_path(@card) %> |
 <%= link_to 'Back', cards_path %>

@@ -14,6 +14,7 @@ class UsersController < ApplicationController
   def admin
     if current_user.admin?
       @user = User.find(current_user.id)
+      @card = Card.new
     else
       redirect_to root_path
     end

@@ -6,11 +6,7 @@ class CreateCards < ActiveRecord::Migration
       t.string :desc
       t.integer :cost
       t.string :type
-      t.string :start
-      t.string :upkeep
-      t.string :downkeep
-      t.string :main
-      t.string :end
+      t.string :effect
 
       t.timestamps null: false
     end

@@ -10,6 +10,8 @@ class CardsController < ApplicationController
   # GET /cards/1
   # GET /cards/1.json
   def show
+    @card = Card.find(params[:id])
+    @cardjson = @card.to_json
   end
 
   # GET /cards/new
@@ -69,6 +71,6 @@ class CardsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def card_params
-      params.require(:card).permit(:title, :img, :desc, :cost, :type, :start, :upkeep, :downkeep, :main, :end)
+      params.require(:card).permit(:title, :img, :desc, :cost, :type, :size, :score, :effect, :main, :end)
     end
 end
