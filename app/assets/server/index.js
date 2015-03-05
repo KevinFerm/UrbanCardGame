@@ -9,14 +9,25 @@ db.get("SELECT * FROM users", function(err, user) {
     console.log(user.id);
 });
 
+/*
+* Alla Emit som man tar emot ska ha id av vilken match det är som den sickas ifrån.
+* Data variablen är information ifrån Client
+*
+* */
+
 io.on('connection', function(socket){
     console.log("User connected");
-
     // Join the battle Room
-    socket.on('create', function(room) {
-        console.log("User joined room " + room);
-        socket.join(room);
-        io.emit('join', "Joined Match");
+    socket.on('create', function(data) {
+        console.log("User joined room " + data.room);
+        socket.join(data.room);
+        //io.emit('join', "Joined Match");
+        Shuffle(data);
+        Draw(data,5);
+    });
+
+    socket.on('start hand', function(data) {
+        Draw(data,5);
     });
 
 });
@@ -27,50 +38,117 @@ function MatchMaking(){
 }
 
 // Play card
-function Play(match){
-    // Check card in hand
-    // Check cost
-    // Play card effect
-    // Return success or fail
-    io.to(match).emit('Play Card', {
-        msg: 'Card Played'
+function Play(data){
+    db.get("SELECT * FROM matches WHERE id='"+data.id+"'", function(err, match) {
+        // Get Cards
+        var players = JSON.parse(match.players);
+        // Get the battlefield
+        var battlefield = JSON.parse(match.battlefield);
+
+        // Check card in hand
+        for(var i = 0; i < players[data.playerid]['hand'].length; i++){
+            var card = players[data.playerid]['hand'][i];
+            if(data.cardid == card.id){
+                // Check cost
+                if(players[data.playerid].score >= card.cost){
+                    // Pay the cost of the card
+                    players[data.playerid].score -= card.cost;
+
+                    // Play card effect if its is an event card, or if its a person we should check target building
+                    switch(card.type){
+                        case 'Event':
+                            break;
+                        case 'Person':
+                            break;
+                    }
+
+                    // Add card to the battlefield on your side
+                    battlefield[data.playerid].battlefield.push(card);
+
+                    // Remove the card in your hand
+                    players[data.playerid]['hand'].splice(i, 1);
+
+                    // Update Battlefield and Hand
+                    db.run("UPDATE matches SET battlefield = '"+JSON.stringify(battlefield)+"', players = '"+JSON.stringify(players)+"' WHERE id = '"+data.id+"'");
+
+                    // Return success or fail
+
+                    io.to(match).emit('Play Card', {
+                        msg: 'Card Played'
+                    });
+                }
+            }
+            break;
+        }
     });
 }
 
 // Draw x Cards
-function Draw(match,deck,x){
+function Draw(data,x){
     x = typeof x !== 'undefined' ? x : 1; // Default value of draw a card is 1
+
     var cards = [];
-    for(var i = 0; i < x; i++){
-        // draw card
-        // Return success or fail
-        cards.append(deck[0]);
-        deck.shift();
-    }
-    // Update Deck in DB here
-    // Update Hand with new cards
+    db.get("SELECT * FROM matches WHERE id='"+data.id+"'", function(err, match) {
+        var deck = JSON.parse(match.decks);
+        var players = JSON.parse(match.players); // To add cards onto tire hands
+
+        for(var i = 0; i < x; i++){
+            // draw card and add it to the hand
+            players[data.playerid]['hand'].push(deck[data.playerid][0]);
+
+            // Remove the drawn card from the deck
+            deck[data.playerid].shift();
+        }
+
+        // Update Hand with new cards
+        io.to(match).emit('hand', cards);
+
+        // Update Deck in DB
+        db.run("UPDATE matches SET decks = '"+JSON.stringify(deck)+"', players = '"+JSON.stringify(players)+"' WHERE id = '"+data.id+"'");
+    });
 }
 
 // Specify what card to draw
-function stackDraw(deck,n) {
+function StackDraw(data,n) {
     var card;
+    db.get("SELECT * FROM matches WHERE id='"+data.id+"'", function(err, match) {
+        var deck = JSON.parse(match.decks);
+        if (n >= 0 && n < deck[data.playerid].length) {
+            card = deck[data.playerid][n];
+            deck[data.playerid].splice(n, 1);
+        }
+        else
+            card = null;
 
-    if (n >= 0 && n < deck.length) {
-        card = deck[n];
-        deck.splice(n, 1);
-    }
-    else
-        card = null;
-
-    // Update Deck in DB here
-    // Update Hand with new cards
+        // Update Deck in DB here
+        // Update Hand with new cards
+    });
 }
 
-function Shuffle(deck){
-    for (i = 0; i < deck.length; i++) {
-        k = Math.floor(Math.random() * deck.length);
-        temp = deck[i];
-        deck[i] = deck[k];
-        deck[k] = temp;
-    }
+function Shuffle(data){
+    db.get("SELECT decks FROM matches WHERE id='"+data.id+"'", function(err, match) {
+        var deck = JSON.parse(match.decks);
+        for(var q = 0; q < 5; q++)
+        for (var i = 0; i < deck[data.playerid].length; i++) {
+            var k = Math.floor(Math.random() * deck[data.playerid].length);
+            var temp = deck[data.playerid][i];
+            deck[data.playerid][i] = deck[data.playerid][k];
+            deck[data.playerid][k] = temp;
+        }
+        // Update Deck
+        db.run("UPDATE matches SET decks = '"+JSON.stringify(deck)+"' WHERE id = '"+data.id+"'");
+        console.log("Updated Deck with Shuffles");
+    });
+}
+
+function GainPoints(){
+    //Update points
+}
+
+function DestroyCard(){
+    // Destroy the given card on the battlefield
+}
+
+function Discard(){
+    // Selected player has selected a card in his hand and now we discard it.
 }
