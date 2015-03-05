@@ -1,4 +1,4 @@
-
+socket = io('http://88.131.100.93:1337')
 gameReady = true
 
 allowDrop = (ev) ->
@@ -16,12 +16,15 @@ drop = (ev) ->
   #socket.emit 'playCard', data
   return
 
-$(document).ready ->
+$ ->
   if gameReady
     $('#draw-deck').click ->
       #socket.emit 'drawCard', 1
-      return
-  return
+  socket.emit('create', { # Create set the game up for this player
+    room: 'Denatons Battle',
+    id: 1, #id of the battle
+    playerid: 0 #id of the this player
+  })
 
 #socket.on 'readyGame', ->
 #  gameReady = true

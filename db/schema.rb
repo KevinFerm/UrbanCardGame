@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150302163443) do
+ActiveRecord::Schema.define(version: 20150304204541) do
 
   create_table "cards", force: :cascade do |t|
     t.string   "title"
@@ -19,13 +19,11 @@ ActiveRecord::Schema.define(version: 20150302163443) do
     t.string   "desc"
     t.integer  "cost"
     t.string   "type"
-    t.string   "start"
-    t.string   "upkeep"
-    t.string   "downkeep"
-    t.string   "main"
-    t.string   "end"
+    t.string   "effect"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "size"
+    t.integer  "score"
   end
 
   create_table "matches", force: :cascade do |t|
