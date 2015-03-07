@@ -12,8 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require socket.io
 //= require foundation
+//= require socket.io
 //= require turbolinks
 //= require_tree .
 

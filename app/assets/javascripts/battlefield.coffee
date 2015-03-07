@@ -1,4 +1,4 @@
-#socket = io('http://88.131.100.93:1337')
+socket = io('http://88.131.100.93:1337')
 gameReady = true
 
 allowDrop = (ev) ->
@@ -13,18 +13,24 @@ drop = (ev) ->
   ev.preventDefault()
   data = ev.dataTransfer.getData('text')
   console.log document.getElementById('battlefield')
-  socket.emit 'playCard', data
+  #socket.emit 'playCard', data
   return
 
 $ ->
   if gameReady
+    socket.on "draw", (data) ->
+      console.log(data)
+      for card in data.cards
+          console.log(card.name)
+          $('#hand').append '<img id="Card_' + card.name + '" src="http://placehold.it/200x270/aaaaaa&amp;text=[Card_' + card.name + ']" style="opacity: 0.9" draggable="true" ondragstart="drag(event)">'
+
     $('#draw-deck').click ->
       #socket.emit 'drawCard', 1
-  socket.emit('create', { # Create set the game up for this player
-    room: 'Denatons Battle',
-    id: 1, #id of the battle
-    playerid: 0 #id of the this player
-  })
+    socket.emit('create', { # Create set the game up for this player
+      room: 'Denatons Battle',
+      id: 1, #id of the battle
+      playerid: 0 #id of the this player
+    })
 
 #socket.on 'readyGame', ->
 #  gameReady = true
@@ -37,6 +43,4 @@ $ ->
 #socket.on 'playCard', (data) ->
 #  document.getElementById('battlefield').appendChild document.getElementById(data)
 #  return
-
-
 
