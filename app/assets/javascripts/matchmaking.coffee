@@ -5,7 +5,7 @@ $ ->
   $(document).on "click", "#startMatchMake", ->
     deckname = $(document).find("#deck_user").val()
     deck = getDeckJSON(deckname)
-    deck = jQuery.parseJSON(deck)
+    deck = $.parseJSON(deck)
     console.log deck[deckname]
     array = {}
     array[deckname] = deck[deckname]

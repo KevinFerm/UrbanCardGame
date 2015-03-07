@@ -11,6 +11,9 @@ var db = new sqlite3.Database("../../../db/development.sqlite3");
 *
 * */
 
+var drawhand = []
+drawhand[0] = false
+drawhand[1] = false
 io.on('connection', function(socket){
     console.log("User connected");
     // Join the battle Room
@@ -19,12 +22,35 @@ io.on('connection', function(socket){
         socket.join(data.room);
         //io.emit('join', "Joined Match");
         Shuffle(data);
-        Draw(data,5);
+        //Draw(data,5);
+
+        socket.on('drawCard', function(data) {
+            console.log(data)
+            Draw(data,1)
+
+        });
+
+        socket.on('playCard', function(data) {
+            Play(data);
+            io.to(data.room).emit('playCard',data);
+            console.log("Hej");
+        });
+
+        socket.on('start hand', function(data) {
+            console.log(drawhand);
+            if (drawhand[data.playerid] == false){
+            Draw(data,5);
+
+                console.log(drawhand);
+            drawhand[data.playerid] = true
+            }
+            else {
+                io.to(data.room).emit('drawhand', data.playerid)
+            }
+        });
+
     });
 
-    socket.on('start hand', function(data) {
-        Draw(data,5);
-    });
 
 });
 
@@ -95,10 +121,10 @@ function Draw(data,x){
         var cards = [];
         for(var i = 0; i < x; i++){
             // draw card and add it to the hand
-            players[data.playerid]['hand'].push(deck[data.playerid][0]);
-            cards.push(deck[data.playerid][0]);
+            players[data.playerid]['hand'].push(deck[data.playerid][0][0]);
+            cards.push(deck[data.playerid][0][0]);
             // Remove the drawn card from the deck
-            deck[data.playerid].shift();
+            //console.log(cards);
         }
 
         // Update Hand with new cards

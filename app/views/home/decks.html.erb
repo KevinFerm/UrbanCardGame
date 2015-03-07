@@ -18,7 +18,7 @@
 
 <h2>Cardlist:</h2>
 <% @cards.each do |x,y| %>
-<div id="addCardToDeck" class="card_<%= x.title %>">
+<img src="http://placehold.it/200x300/aaaaaa&amp;text=<%= x.title %>" id="addCardToDeck" class="card_<%= x.title %>" style="color: #ffffff;">
   <%= x.title %>
 </div>
 <% end  %>

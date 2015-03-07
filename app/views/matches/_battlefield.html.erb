@@ -1,0 +1,39 @@
+
+<table>
+    <tr>
+      <td>
+          <div class="info"><img src="http://placehold.it/200x400/aaaaaa&text=[Info]"/>
+            <div style="padding:10px"></div>
+          </div></td>
+      <td>
+          <div ondrop="drop(event)" ondragover="allowDrop(event)" class="battlefield">
+            <div id="battlefield" style="padding:10px"><img src="http://placehold.it/1000x400&text=[Battlefield]"/></div>
+          </div></td>
+      <td>
+          <div class="chat">
+            <div style="padding:10px"><img src="http://placehold.it/200x400/aaaaaa&text=[Chat]"/></div>
+          </div></td>
+    </tr>
+    <tr>
+      <td>
+          <div class="discard">
+            <div style="padding:10px"><img src="http://placehold.it/200x300/cccccc&text=[Disacrd]"/></div>
+          </div></td>
+      <td>
+          <div class="hand">
+            <div id="hand" style="padding:10px"><img src="http://placehold.it/1000x300/eeeeee&text=[Hand]"/>
+              <% @players.each do |x,y| %>
+                  <% if y['player'] == current_user.email %>
+              <% y['hand'].each do |card,number| %>
+                      <img id="Card_<%= card['title'] %>" src="http://placehold.it/50x100/aaaaaa&amp;text=[Card_<%= card['title'] %>]" style="opacity: 0.9" draggable="true" ondragstart="drag(event)">
+        <%end %>
+            <% end %>
+              <% end %>
+            </div>
+          </div></td>
+      <td>
+          <div class="deck">
+            <div style="padding:10px"><img id="draw-deck" src="http://placehold.it/200x100/cccccc&text=[Deck]"/></div>
+          </div></td>
+    </tr>
+</table>

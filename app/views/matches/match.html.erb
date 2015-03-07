@@ -1,7 +1,7 @@
 <% if current_user %>
     <% if @in_match %>
         Yer in a match bro
-        <%= @match %>
+        <%= render :partial => 'battlefield', :locals => {:match_id => @match}%>
     <% else %>
         Not in match, checking proof of concept
         //Add matchmaking here

@@ -36,10 +36,53 @@ class MatchesController < ApplicationController
     return deckarray.to_json
   end
 
+    #Creates a match
+  #Just basic setting of match variables, and adding the first player with the chosen deck
+  def creatematch(deck)
+    if current_user
+      puts "NOT MATCHES HUZZAHHHHHHHHHHHHHHHHHHHHHHHHHHh"
+      playerarray = {}
+
+      playerarray[0] = {}
+      playerarray[0]["id"] = current_user.id
+      playerarray[0]["player"] = current_user.email
+      playerarray[0]["score"] = 0
+      playerarray[0]["hand"] = []
+      druck = "[#{getDeckFromNames(deck)}]"
+      Match.new({
+                    active:true,
+                    players: playerarray.to_json,
+                    max_players: 2,
+                    turn: 0,
+                    decks: druck
+                }).save
+    end
+  end
+
+  def joinmatch(match)
+    if current_user
+      #Just
+      playerarray = JSON.parse(match.players)
+
+      playerarray[1] = {}
+      playerarray[1]["id"] = current_user.id
+      playerarray[1]["player"] = current_user.email
+      playerarray[1]["score"] = 0
+      playerarray[1]["hand"] = []
+      match.update({
+                    active:true,
+                    players: playerarray.to_json,
+                    max_players: 2,
+                    turn: 0,
+                    decks: druck
+                })
+    end
+  end
+
   def matchmake
     if current_user
       deck = match_params[:deck]
-      playerarray = {}#"[{id:#{current_user.id.to_s}, player:'#{current_user.email.to_s}', score:0, hand:[] }]"
+      #"[{id:#{current_user.id.to_s}, player:'#{current_user.email.to_s}', score:0, hand:[] }]"
 
       #puts deck
       matches = Match.where({active:true})
@@ -52,39 +95,21 @@ class MatchesController < ApplicationController
         end #players.each do |z,c|
 
         if playercount < max_players
-          #matchmake
+          #Join the match HMM
           match = x
           playjson = players.to_json
           userjson = "{email:#{current_user.email},deck:#{deck.to_s}"
           puts userjson
+          joinmatch(match)
 
-        else
-          #create new match
+        else #No match with open players
+          #creatematch(deck) < Don't want to do that
 
         end #if playercount < max_players
 
       end #matches.each do |x,y|
       if matches.empty?
-        puts "NOT MATCHES HUZZAHHHHHHHHHHHHHHHHHHHHHHHHHHh"
-
-        playerarray[0] = {}
-        playerarray[0]["id"] = current_user.id
-        playerarray[0]["player"] = current_user.email
-        playerarray[0]["score"] = 0
-        playerarray[0]["hand"] = []
-
-        userjson = "{email:#{current_user.email},deck:#{current_user.decks}"
-        druck = "[#{getDeckFromNames(deck)}]"
-        Match.new({
-                      active:true,
-                      players: playerarray.to_json,
-                      max_players: 2,
-                      turn: 0,
-                      decks: druck
-                  }).save
-        #puts userjson
-
-        #Add new match
+        creatematch(deck)
       end #if matches.empty?
 
       render nothing:true
@@ -109,6 +134,9 @@ class MatchesController < ApplicationController
           if c["player"] == @user.email
             @in_match = true
             @match = x.id
+            gon.playerid = z
+            gon.match = x.to_json
+            @players = JSON.parse(x.players)
 
           end
         end
