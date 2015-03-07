@@ -1,4 +1,4 @@
-socket = io('http://88.131.100.93:1337')
+#socket = io('http://88.131.100.93:1337')
 gameReady = true
 
 allowDrop = (ev) ->
@@ -13,7 +13,7 @@ drop = (ev) ->
   ev.preventDefault()
   data = ev.dataTransfer.getData('text')
   console.log document.getElementById('battlefield')
-  #socket.emit 'playCard', data
+  socket.emit 'playCard', data
   return
 
 $ ->

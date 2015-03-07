@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   root 'home#index'
   get '/decks' => 'home#decks'
   post '/newdeck' => 'home#newdeck'
+  get '/match' => 'matches#match'
+  post '/matches/matchmake' => 'matches#matchmake'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

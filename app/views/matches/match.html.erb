@@ -1,0 +1,12 @@
+<% if current_user %>
+    <% if @in_match %>
+        Yer in a match bro
+        <%= @match %>
+    <% else %>
+        Not in match, checking proof of concept
+        //Add matchmaking here
+        <h1>Choose deck:</h1>
+        <%= select("deck", "user", @decks, {include_blank: false}) %>
+        <button id="startMatchMake" class="button">Matchmake</button>
+    <% end %>
+<% end %>
