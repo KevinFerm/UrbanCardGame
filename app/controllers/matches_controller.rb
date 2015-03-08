@@ -46,7 +46,7 @@ class MatchesController < ApplicationController
       playerarray[0] = {}
       playerarray[0]["id"] = current_user.id
       playerarray[0]["player"] = current_user.email
-      playerarray[0]["score"] = 0
+      playerarray[0]["score"] = 5050
       playerarray[0]["hand"] = []
       druck = "[#{getDeckFromNames(deck)}]"
       Match.new({
@@ -67,7 +67,7 @@ class MatchesController < ApplicationController
       playerarray[1] = {}
       playerarray[1]["id"] = current_user.id
       playerarray[1]["player"] = current_user.email
-      playerarray[1]["score"] = 0
+      playerarray[1]["score"] = 5050
       playerarray[1]["hand"] = []
       match.update({
                     active:true,
