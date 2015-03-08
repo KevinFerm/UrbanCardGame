@@ -6,7 +6,7 @@
             <div style="padding:10px"></div>
           </div></td>
       <td>
-          <div ondrop="drop(event)" ondragover="allowDrop(event)" class="battlefield">
+          <div class="battlefield">
             <div id="battlefield" style="padding:10px"><img src="http://placehold.it/1000x400&text=[Battlefield]"/></div>
           </div></td>
       <td>
@@ -25,7 +25,8 @@
               <% @players.each do |x,y| %>
                   <% if y['player'] == current_user.email %>
               <% y['hand'].each do |card,number| %>
-                      <img id="Card_<%= card['title'] %>" src="http://placehold.it/50x100/aaaaaa&amp;text=[Card_<%= card['title'] %>]" style="opacity: 0.9" draggable="true" ondragstart="drag(event)">
+                          <div class="card" id="<%= card['id'] %>">
+                      <img id="Card_<%= card['title'] %> draggable" src="http://placehold.it/50x100/aaaaaa&amp;text=[Card_<%= card['title'] %>]" style="opacity: 0.9"></div>
         <%end %>
             <% end %>
               <% end %>

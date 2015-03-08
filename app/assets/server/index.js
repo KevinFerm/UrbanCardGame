@@ -31,9 +31,10 @@ io.on('connection', function(socket){
         });
 
         socket.on('playCard', function(data) {
+
+            console.log(data);
             Play(data);
             io.to(data.room).emit('playCard',data);
-            console.log("Hej");
         });
 
         socket.on('start hand', function(data) {
@@ -67,13 +68,17 @@ function Play(data){
         var players = JSON.parse(match.players);
         // Get the battlefield
         var battlefield = JSON.parse(match.battlefield);
+        console.log("Begin");
 
         // Check card in hand
         for(var i = 0; i < players[data.playerid]['hand'].length; i++){
             var card = players[data.playerid]['hand'][i];
+            console.log("First loop");
             if(data.cardid == card.id){
+                console.log("Check if id matches");
                 // Check cost
                 if(players[data.playerid].score >= card.cost){
+                    console.log("Check if cost");
                     // Pay the cost of the card
                     players[data.playerid].score -= card.cost;
 

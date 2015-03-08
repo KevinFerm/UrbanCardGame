@@ -17,7 +17,9 @@ pre {
   padding: 10px;
   font-size: 11px;
 }
-
+.card {
+  display: inline-block;
+}
 a {
   color: #000;
   &:visited {
